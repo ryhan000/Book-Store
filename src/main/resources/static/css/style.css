@@ -1,8 +1,16 @@
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+
 }
 
 .navbar {
   margin-bottom: 20px;
+}
+
+hr {
+   height: 1px;
+   margin-left: auto;
+   margin-right: auto;
+   background-color:#609f8f;
+   color:#609f8f;
+   border: 0 none;
 }
