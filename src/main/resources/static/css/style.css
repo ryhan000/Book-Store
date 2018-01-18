@@ -14,3 +14,21 @@ hr {
    color:#609f8f;
    border: 0 none;
 }
+.page-top{
+	margin-top:-5px;
+}
+
+.home-headline{
+	font-family: 'Times New Roman', Times, serif;
+	font-size:24px;
+	color: #fff;
+	margin: auto;
+	text-align: center;
+	margin-top: -13px;
+}
+
+.home-headline span {
+	background-color: #231F20;
+        padding: 5px 22px;
+	
+}
