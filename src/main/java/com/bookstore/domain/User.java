@@ -3,7 +3,6 @@ package com.bookstore.domain;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,12 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import com.bookstore.security.domain.Authority;
-import com.bookstore.security.domain.Role;
 import com.bookstore.security.domain.UserRole;
 
 import net.minidev.json.annotate.JsonIgnore;
