@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.bookstore.service.Utility.SecurityUtility;
+import com.bookstore.serviceUtility.SecurityUtility;
 
 @Configuration
 @EnableWebSecurity
