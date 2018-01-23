@@ -1,5 +1,7 @@
 package com.bookstore.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.tomcat.jni.Local;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +10,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bookstore.domain.User;
 import com.bookstore.security.domain.PasswordResetToken;
+import com.bookstore.security.domain.Role;
 import com.bookstore.service.UserService;
 import com.bookstore.serviceImpl.UserSecurityService;
+import com.bookstore.serviceUtility.SecurityUtility;
+
+import io.undertow.attribute.RequestMethodAttribute;
 
 @Controller
 public class HomeController {
@@ -44,7 +52,51 @@ public class HomeController {
 		return"myAccount";
 	}
 	
+   @RequestMapping(value="/newUser", method=RequestMethod.POST)
+   public String newUserPost(HttpServletRequest request, @ModelAttribute("email") String userEmail, @ModelAttribute("username") String username,Model model  ) throws Exception {
+	   
+	 model.addAttribute("ClassActiveNewAccount", true);
+	 model.addAttribute("email", userEmail);
+	 model.addAttribute("username", username);
+	 
+	 
+	 if(userService.findByUsername(username) != null){
+		 model.addAttribute("usernameExists",true);
+		 
+		 return "myAccount";
+	 }
+	 
 
+	 if(userService.findByEmail(userEmail) != null){
+		 model.addAttribute("email",true);
+		 
+		 return "myAccount";
+	 }
+	 
+	 User user =new User();
+	 user.setEmail(userEmail);
+	 user.setUsername(username);
+	 
+	 String Password=SecurityUtility .randomPassword();
+	 
+	 String encryptedPassword= SecurityUtility.passwordEncoder().encode(Password);
+	 
+	 user.setPassword(encryptedPassword);
+	 
+	 Role role=new Role();
+	 role.setRoleId(1);
+	 role.setName("ROLE_USER");
+	 
+	 
+	
+	 
+	 
+	return null;
+	    
+   }
+	
+	
+	
 	@RequestMapping("/newAccount")
 	public String newUser(Local local,@RequestParam("token") String token,Model model) {
 		

@@ -10,14 +10,20 @@ import org.springframework.data.jpa.repository.Query;
 import com.bookstore.domain.User;
 import com.bookstore.security.domain.PasswordResetToken;
 
-public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetToken,Long> {
+public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetToken, Long> {
 
-	PasswordResetToken findByToken(String token);
-	PasswordResetToken findByUser(User user);
-	Stream<PasswordResetToken> findAllByExpiryDateLessThan(Date now);
-	
-	@Modifying
-	@Query("delete from PasswordResetToken t where t.expirydate <=?1")
-	void deleteAllExpiredSince(Date now);
+    PasswordResetToken findByToken(String token);
+
+    PasswordResetToken findByUser(User user);
+
+    Stream<PasswordResetToken> findAllByExpiryDateLessThan(Date now);
+
+    void deleteByExpiryDateLessThan(Date now);
+
+    @Modifying
+    @Query("delete from PasswordResetToken t where t.expiryDate <= ?1")
+    void deleteAllExpiredSince(Date now);
 	
 }
+
+
