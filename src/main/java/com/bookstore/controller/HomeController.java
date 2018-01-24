@@ -1,10 +1,16 @@
 package com.bookstore.controller;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tomcat.jni.Local;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,14 +24,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.bookstore.domain.User;
 import com.bookstore.security.domain.PasswordResetToken;
 import com.bookstore.security.domain.Role;
+import com.bookstore.security.domain.UserRole;
 import com.bookstore.service.UserService;
 import com.bookstore.serviceImpl.UserSecurityService;
+import com.bookstore.serviceUtility.MailConstructor;
 import com.bookstore.serviceUtility.SecurityUtility;
 
-import io.undertow.attribute.RequestMethodAttribute;
 
 @Controller
 public class HomeController {
+	
+	@Autowired
+	private JavaMailSender mailSender;
+	
+	@Autowired
+	private MailConstructor mailConstructor;
 	
 	@Autowired
 	private UserService userService; 
@@ -77,9 +90,9 @@ public class HomeController {
 	 user.setEmail(userEmail);
 	 user.setUsername(username);
 	 
-	 String Password=SecurityUtility .randomPassword();
+	 String password=SecurityUtility .randomPassword();
 	 
-	 String encryptedPassword= SecurityUtility.passwordEncoder().encode(Password);
+	 String encryptedPassword= SecurityUtility.passwordEncoder().encode(password);
 	 
 	 user.setPassword(encryptedPassword);
 	 
@@ -87,11 +100,22 @@ public class HomeController {
 	 role.setRoleId(1);
 	 role.setName("ROLE_USER");
 	 
+	 Set<UserRole> userRoles= new HashSet<>();
+	 userRoles.add(new UserRole(user,role));
+	 userService.createUser(user, userRoles);
 	 
-	
+	    String token = UUID.randomUUID().toString();
+	 	userService.createPasswordResetTokenForUser(user, token);
+		
+		String appUrl = "http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+		
+		SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
+	 
+	    mailSender.send(email);
+	    model.addAttribute("emailSend", true);
 	 
 	 
-	return null;
+	return "myAccount";
 	    
    }
 	
