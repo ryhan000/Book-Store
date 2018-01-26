@@ -13,4 +13,5 @@ public interface UserService {
 	User findByUsername(String username);
 	User findByEmail(String email);
 	User createUser(User user,Set<UserRole> userRole);
+	User save(User user);
 }
