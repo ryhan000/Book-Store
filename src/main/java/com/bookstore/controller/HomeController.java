@@ -1,6 +1,7 @@
 package com.bookstore.controller;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bookstore.domain.Book;
 import com.bookstore.domain.User;
 import com.bookstore.security.domain.PasswordResetToken;
 import com.bookstore.security.domain.Role;
 import com.bookstore.security.domain.UserRole;
+import com.bookstore.service.BookService;
 import com.bookstore.service.UserService;
 import com.bookstore.serviceImpl.UserSecurityService;
 import com.bookstore.serviceUtility.MailConstructor;
@@ -47,6 +50,11 @@ public class HomeController {
 	@Autowired
 	private  UserSecurityService userSecurityService;
 	
+	
+	@Autowired
+	private BookService bookService;
+	
+	
 	@RequestMapping("/")
 	public String index() {
 		
@@ -57,6 +65,14 @@ public class HomeController {
 	public String login(Model model) {
 		model.addAttribute("classActiveLogin", true);
 		return"myAccount";
+	}
+	
+	@RequestMapping("/bookShelf")
+	public String bookShelf(Model model) {
+		
+	List<Book> bookList=	bookService.findAll();
+		model.addAttribute("bookList", bookList);
+		return"bookShelf";
 	}
 	
 
