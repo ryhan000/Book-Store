@@ -68,11 +68,11 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/bookShelf")
-	public String bookShelf(Model model) {
-		
-	List<Book> bookList=	bookService.findAll();
+	public String bookshelf(Model model) {
+		List<Book> bookList = bookService.findAll();
 		model.addAttribute("bookList", bookList);
-		return"bookShelf";
+		
+		return "bookShelf";
 	}
 	
 
