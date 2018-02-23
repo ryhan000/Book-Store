@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bookstore.domain.Book;
 import com.bookstore.repository.BookRepository;
@@ -22,10 +23,9 @@ public class BookServiceImpl implements BookService {
 		return (List<Book>) bookRepository.findAll();
 	}
 
-	@Override
 	public Book findOne(Long id) {
-		// TODO Auto-generated method stub
-		return  bookRepository.getOne(id);
+	
+		return bookRepository.findOne(id);
 	}
 
 	
